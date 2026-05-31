@@ -15,6 +15,8 @@
   ·
   <a href="docs/lazyingrouter/README.md">Operator guide</a>
   ·
+  <a href="docs/lazyingrouter/provider-setup.md">Provider setup</a>
+  ·
   <a href="README.en.md">Upstream New API docs</a>
 </p>
 
@@ -68,10 +70,14 @@ Directly wiring every application to OpenRouter, Venice, GRSAI, Claude-compatibl
 
 | Provider | First Integration Path | Notes |
 | --- | --- | --- |
-| OpenRouter | Built-in OpenRouter channel | Use `https://openrouter.ai/api/v1`; optional headers include `HTTP-Referer` and `X-OpenRouter-Title`. |
-| Venice | OpenAI-compatible custom channel | Use `https://api.venice.ai/api/v1`; expose curated text/image models only after billing is verified. |
-| GRSAI | Image-generation channel/custom adaptor | Treat as image-first; verify request/response shape before exposing to users. |
+| OpenAI | Built-in OpenAI channel | Use `https://api.openai.com`; supports standard OpenAI-compatible routes. |
+| OpenRouter | Built-in OpenRouter channel | Use `https://openrouter.ai/api`; optional headers include `HTTP-Referer` and `X-OpenRouter-Title`. |
+| DeepSeek | Built-in DeepSeek channel | Use `https://api.deepseek.com`; defaults to `deepseek-chat` and `deepseek-reasoner`. |
+| Venice | OpenAI-compatible channel | Use `https://api.venice.ai/api`; do not add trailing `/v1` because this codebase appends `/v1/...`. |
+| GRSAI | Image-generation channel/custom adaptor | Treat as image-first; only expose through an OpenAI-compatible channel when a compatible base URL and models are configured. |
 | claude-api.org | Claude Messages or OpenAI-compatible custom channel | Pick channel mode from the actual endpoint contract; do not assume Anthropic semantics. |
+
+See `docs/lazyingrouter/provider-setup.md` for the safe bootstrap command, environment variables, and client examples.
 
 ## Local Development
 

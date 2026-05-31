@@ -32,6 +32,8 @@ It is based on the mature open-source New API gateway and keeps upstream attribu
 - Local env template: `.env.lazyingrouter.example`.
 - Local compose file: `docker-compose.lazyingrouter.yml`.
 - Provider setup and AgInTiFlow integration plan: `docs/lazyingrouter/README.md`.
+- Provider bootstrap tool: `scripts/bootstrap-provider-channels.py`.
+- OpenAI-compatible provider setup guide: `docs/lazyingrouter/provider-setup.md`.
 
 ## Local Development
 
@@ -60,10 +62,20 @@ docker compose -f docker-compose.lazyingrouter.yml up -d --build
 
 ## First Provider Targets
 
-- OpenRouter: built-in OpenRouter channel, base URL `https://openrouter.ai/api/v1`.
-- Venice: custom OpenAI-compatible channel, base URL `https://api.venice.ai/api/v1`.
-- GRSAI: image-generation channel/custom adaptor; verify request/response shape before exposing.
+- OpenAI: built-in OpenAI channel, base URL `https://api.openai.com`.
+- OpenRouter: built-in OpenRouter channel, base URL `https://openrouter.ai/api`.
+- DeepSeek: built-in DeepSeek channel, base URL `https://api.deepseek.com`.
+- Venice: OpenAI-compatible channel, base URL `https://api.venice.ai/api`.
+- GRSAI: native image generation is not OpenAI-compatible; only expose through a channel when a compatible base URL and model list are configured.
 - claude-api.org: Claude Messages or OpenAI-compatible custom channel depending on endpoint.
+
+Dry-run local provider bootstrap:
+
+```bash
+python3 scripts/bootstrap-provider-channels.py --fetch-models
+```
+
+See `docs/lazyingrouter/provider-setup.md` for the Docker SQLite apply command and client examples.
 
 ## Next Integration With AgInTiFlow
 

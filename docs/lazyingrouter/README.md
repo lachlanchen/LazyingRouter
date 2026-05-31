@@ -69,32 +69,54 @@ docker compose -f docker-compose.lazyingrouter.yml up -d --build
 
 ## Provider Channel Mapping
 
+Detailed bootstrap commands and client examples live in `provider-setup.md`.
+
+### OpenAI
+
+Use the built-in OpenAI channel.
+
+- Upstream base URL: `https://api.openai.com`
+- Auth: Bearer upstream key.
+- Exposed route to clients: OpenAI-compatible `/v1/chat/completions`, `/v1/embeddings`, image/audio routes when enabled by model and route support.
+- Default low-cost smoke model can be `gpt-4o-mini`.
+
 ### OpenRouter
 
 Use the built-in OpenRouter channel when available.
 
-- Upstream base URL: `https://openrouter.ai/api/v1`
+- Upstream base URL: `https://openrouter.ai/api`
 - Auth: Bearer upstream key.
 - Exposed route to clients: OpenAI-compatible `/v1/chat/completions` and model list.
 - Default visible model can be `openrouter/auto`.
 - Optional upstream headers: `HTTP-Referer` and `X-OpenRouter-Title` if supported by channel settings.
 
+### DeepSeek
+
+Use the built-in DeepSeek channel.
+
+- Upstream base URL: `https://api.deepseek.com`
+- Auth: Bearer upstream key.
+- Default models: `deepseek-chat`, `deepseek-reasoner`.
+- Use this as the first low-cost smoke provider for local gateway verification.
+
 ### Venice
 
 Use a custom OpenAI-compatible channel unless a dedicated Venice channel is added later.
 
-- Upstream base URL: `https://api.venice.ai/api/v1`
+- Upstream base URL: `https://api.venice.ai/api`
 - Auth: Bearer upstream key.
 - Exposed models should be curated, not blindly all upstream models.
 - Start with text models and add image models only after billing and output accounting are verified.
+- Do not include the trailing `/v1`; this codebase appends `/v1/...` request paths to `base_url`.
 
 ### GRSAI
 
-Use a custom channel for image-generation calls until a dedicated adaptor is implemented.
+Use a custom or dedicated adaptor for image-generation calls until a compatible OpenAI-style endpoint is verified.
 
 - Treat this as an image provider first, not a generic text LLM provider.
 - Add model names under an image category and test request/response shape before exposing to users.
 - If an endpoint cannot return SVG, return PNG and record `requested_format` and `actual_format`.
+- AgInTiFlow currently calls GRS AI Nano Banana through `POST https://grsaiapi.com/v1/draw/nano-banana` and `POST https://grsaiapi.com/v1/draw/result`, which is not the same shape as OpenAI chat completions.
 
 ### claude-api.org
 

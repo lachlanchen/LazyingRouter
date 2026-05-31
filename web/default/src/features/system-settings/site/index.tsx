@@ -27,8 +27,8 @@ import {
 const defaultSiteSettings: SiteSettings = {
   'theme.frontend': 'default',
   Notice: '',
-  SystemName: 'New API',
-  Logo: '',
+  SystemName: 'LazyingRouter',
+  Logo: '/logo.png',
   Footer: '',
   About: '',
   HomePageContent: '',

@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/lachlanchen/lachlanchen/main/figs/banner.png" alt="LazyingArt banner" width="960" />
+  <a href="https://lazying.art">
+    <img src="../../../web/default/public/logo.png" alt="LazyingArt logo" width="140" />
+  </a>
 </p>
 
 # LazyingRouter

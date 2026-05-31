@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://lazying.art">
+    <img src="../../web/default/public/logo.png" alt="LazyingArt logo" width="140" />
+  </a>
+</p>
+
 # LazyingRouter Adaptation Plan
 
 LazyingRouter is a private AI API aggregator built on top of the mature open-source New API gateway. The goal is to provide OpenRouter-like account, key, quota, and routing behavior while preserving upstream mergeability.

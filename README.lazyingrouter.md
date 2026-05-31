@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://lazying.art">
+    <img src="web/default/public/logo.png" alt="LazyingArt logo" width="140" />
+  </a>
+</p>
+
 # LazyingRouter
 
 LazyingRouter is a private AI API aggregator project under `/home/lachlan/ProjectsLFS/Agent/LazyingRouter`.

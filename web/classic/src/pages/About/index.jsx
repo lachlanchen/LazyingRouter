@@ -62,34 +62,43 @@ const About = () => {
   const customDescription = (
     <div style={{ textAlign: 'center' }}>
       <p>{t('可在设置页面设置关于内容，支持 HTML & Markdown')}</p>
-      {t('New API项目仓库地址：')}
+      {t('LazyingRouter 项目仓库地址：')}
       <a
-        href='https://github.com/QuantumNous/new-api'
+        href='https://github.com/lachlanchen/LazyingRouter'
         target='_blank'
         rel='noopener noreferrer'
         className='!text-semi-color-primary'
       >
-        https://github.com/QuantumNous/new-api
+        https://github.com/lachlanchen/LazyingRouter
       </a>
       <p>
+        <a
+          href='https://github.com/lachlanchen/LazyingRouter'
+          target='_blank'
+          rel='noopener noreferrer'
+          className='!text-semi-color-primary'
+        >
+          LazyingRouter
+        </a>{' '}
+        {t('© {{currentYear}}', { currentYear })}{' '}
+        <a
+          href='https://lazying.art'
+          target='_blank'
+          rel='noopener noreferrer'
+          className='!text-semi-color-primary'
+        >
+          LazyingArt
+        </a>{' '}
+        {t('| 基于')}{' '}
         <a
           href='https://github.com/QuantumNous/new-api'
           target='_blank'
           rel='noopener noreferrer'
           className='!text-semi-color-primary'
         >
-          NewAPI
+          New API
         </a>{' '}
-        {t('© {{currentYear}}', { currentYear })}{' '}
-        <a
-          href='https://github.com/QuantumNous'
-          target='_blank'
-          rel='noopener noreferrer'
-          className='!text-semi-color-primary'
-        >
-          QuantumNous
-        </a>{' '}
-        {t('| 基于')}{' '}
+        {t('和')}{' '}
         <a
           href='https://github.com/songquanpeng/one-api/releases/tag/v0.5.4'
           target='_blank'

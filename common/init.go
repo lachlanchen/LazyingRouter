@@ -23,8 +23,9 @@ var (
 
 func printHelp() {
 	fmt.Println("LazyingRouter " + Version + " - private AI API account, key, quota, and upstream routing gateway.")
+	fmt.Println("Project: LazyingRouter by LazyingArt - https://github.com/lachlanchen/LazyingRouter")
 	fmt.Println("Original Project: OneAPI by JustSong - https://github.com/songquanpeng/one-api")
-	fmt.Println("Maintainer: QuantumNous - https://github.com/QuantumNous/new-api")
+	fmt.Println("Upstream Gateway: New API by QuantumNous - https://github.com/QuantumNous/new-api")
 	fmt.Println("Usage: lazyingrouter [--port <port>] [--log-dir <log directory>] [--version] [--help]")
 }
 

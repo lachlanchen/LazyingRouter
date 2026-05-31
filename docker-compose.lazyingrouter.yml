@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  lazying-router:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lazying-router
+    restart: unless-stopped
+    command: --log-dir /app/logs
+    ports:
+      - "${PORT:-3218}:3000"
+    env_file:
+      - .env.lazyingrouter.example
+    environment:
+      - PORT=3000
+      - SQL_DSN=postgresql://lazying_router:${POSTGRES_PASSWORD:-change-me}@postgres:5432/lazying_router
+      - REDIS_CONN_STRING=redis://:${REDIS_PASSWORD:-change-me}@redis:6379
+      - SESSION_SECRET=${SESSION_SECRET:-}
+      - CRYPTO_SECRET=${CRYPTO_SECRET:-}
+    volumes:
+      - ./data:/data
+      - ./logs:/app/logs
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - lazying-router-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://localhost:3000/api/status | grep -o '\"success\":\\s*true' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    container_name: lazying-router-redis
+    restart: unless-stopped
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-change-me}"]
+    networks:
+      - lazying-router-network
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: lazying-router-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: lazying_router
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_DB: lazying_router
+    volumes:
+      - lazying_router_pg_data:/var/lib/postgresql/data
+    networks:
+      - lazying-router-network
+
+volumes:
+  lazying_router_pg_data:
+
+networks:
+  lazying-router-network:
+    driver: bridge

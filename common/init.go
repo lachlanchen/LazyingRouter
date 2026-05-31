@@ -22,10 +22,10 @@ var (
 )
 
 func printHelp() {
-	fmt.Println("NewAPI(Based OneAPI) " + Version + " - The next-generation LLM gateway and AI asset management system supports multiple languages.")
+	fmt.Println("LazyingRouter " + Version + " - private AI API account, key, quota, and upstream routing gateway.")
 	fmt.Println("Original Project: OneAPI by JustSong - https://github.com/songquanpeng/one-api")
 	fmt.Println("Maintainer: QuantumNous - https://github.com/QuantumNous/new-api")
-	fmt.Println("Usage: newapi [--port <port>] [--log-dir <log directory>] [--version] [--help]")
+	fmt.Println("Usage: lazyingrouter [--port <port>] [--log-dir <log directory>] [--version] [--help]")
 }
 
 func InitEnv() {
@@ -61,6 +61,10 @@ func InitEnv() {
 	} else {
 		CryptoSecret = SessionSecret
 	}
+	SystemName = GetEnvOrDefaultString("SYSTEM_NAME", SystemName)
+	Footer = GetEnvOrDefaultString("FOOTER_HTML", Footer)
+	Logo = GetEnvOrDefaultString("LOGO_URL", Logo)
+	TopUpLink = GetEnvOrDefaultString("TOP_UP_LINK", TopUpLink)
 	if os.Getenv("SQLITE_PATH") != "" {
 		SQLitePath = os.Getenv("SQLITE_PATH")
 	}

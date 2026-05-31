@@ -71,7 +71,7 @@ Use the built-in OpenRouter channel when available.
 - Auth: Bearer upstream key.
 - Exposed route to clients: OpenAI-compatible `/v1/chat/completions` and model list.
 - Default visible model can be `openrouter/auto`.
-- Optional upstream headers: `HTTP-Referer` and `X-Title` if supported by channel settings.
+- Optional upstream headers: `HTTP-Referer` and `X-OpenRouter-Title` if supported by channel settings.
 
 ### Venice
 

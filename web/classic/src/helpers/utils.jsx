@@ -48,7 +48,7 @@ export function isRoot() {
 
 export function getSystemName() {
   let system_name = localStorage.getItem('system_name');
-  if (!system_name) return 'LazyingRouter';
+  if (!system_name) return 'LazyRouter';
   return system_name;
 }
 

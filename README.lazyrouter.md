@@ -4,9 +4,9 @@
   </a>
 </p>
 
-# LazyingRouter
+# LazyRouter
 
-LazyingRouter is a private AI API aggregator project under `/home/lachlan/ProjectsLFS/Agent/LazyingRouter`.
+LazyRouter is a private AI API aggregator project under `/home/lachlan/ProjectsLFS/Agent/LazyRouter`.
 
 It is based on the mature open-source New API gateway and keeps upstream attribution and license files intact. The fork is intended to route user-issued API keys and account credits to authorized upstream providers such as OpenRouter, Venice, GRSAI, and claude-api.org-compatible endpoints.
 
@@ -25,21 +25,21 @@ It is based on the mature open-source New API gateway and keeps upstream attribu
 - Weighted routing and retry.
 - Docker deployment.
 
-## LazyingRouter Additions In This Fork
+## LazyRouter Additions In This Fork
 
-- Default product name changed to `LazyingRouter`.
+- Default product name changed to `LazyRouter`.
 - Runtime branding can be set with `SYSTEM_NAME`, `FOOTER_HTML`, `LOGO_URL`, and `TOP_UP_LINK`.
-- Local env template: `.env.lazyingrouter.example`.
-- Local compose file: `docker-compose.lazyingrouter.yml`.
-- Provider setup and AgInTiFlow integration plan: `docs/lazyingrouter/README.md`.
+- Local env template: `.env.lazyrouter.example`.
+- Local compose file: `docker-compose.lazyrouter.yml`.
+- Provider setup and AgInTiFlow integration plan: `docs/lazyrouter/README.md`.
 - Provider bootstrap tool: `scripts/bootstrap-provider-channels.py`.
-- OpenAI-compatible provider setup guide: `docs/lazyingrouter/provider-setup.md`.
+- OpenAI-compatible provider setup guide: `docs/lazyrouter/provider-setup.md`.
 
 ## Local Development
 
 ```bash
-cd /home/lachlan/ProjectsLFS/Agent/LazyingRouter
-cp .env.lazyingrouter.example .env
+cd /home/lachlan/ProjectsLFS/Agent/LazyRouter
+cp .env.lazyrouter.example .env
 go run . --port 3218
 ```
 
@@ -52,12 +52,12 @@ http://127.0.0.1:3218
 ## Docker Development
 
 ```bash
-cd /home/lachlan/ProjectsLFS/Agent/LazyingRouter
+cd /home/lachlan/ProjectsLFS/Agent/LazyRouter
 SESSION_SECRET="$(openssl rand -hex 32)" \
 CRYPTO_SECRET="$(openssl rand -hex 32)" \
 POSTGRES_PASSWORD="$(openssl rand -hex 24)" \
 REDIS_PASSWORD="$(openssl rand -hex 24)" \
-docker compose -f docker-compose.lazyingrouter.yml up -d --build
+docker compose -f docker-compose.lazyrouter.yml up -d --build
 ```
 
 ## First Provider Targets
@@ -75,16 +75,16 @@ Dry-run local provider bootstrap:
 python3 scripts/bootstrap-provider-channels.py --fetch-models
 ```
 
-See `docs/lazyingrouter/provider-setup.md` for the Docker SQLite apply command and client examples.
+See `docs/lazyrouter/provider-setup.md` for the Docker SQLite apply command and client examples.
 
 ## Next Integration With AgInTiFlow
 
-AgInTiFlow should add a `lazyingrouter` provider that reads:
+AgInTiFlow should add a `lazyrouter` provider that reads:
 
 ```text
-LAZYINGROUTER_API_KEY
-LAZYINGROUTER_BASE_URL
-LAZYINGROUTER_MODEL
+LAZYROUTER_API_KEY
+LAZYROUTER_BASE_URL
+LAZYROUTER_MODEL
 ```
 
 Default local base URL:
@@ -93,4 +93,4 @@ Default local base URL:
 http://127.0.0.1:3218/v1
 ```
 
-Do not put upstream provider keys in AgInTiFlow once LazyingRouter is the account gateway. AgInTiFlow should use a LazyingRouter user API token and let LazyingRouter own upstream routing, usage, and credits.
+Do not put upstream provider keys in AgInTiFlow once LazyRouter is the account gateway. AgInTiFlow should use a LazyRouter user API token and let LazyRouter own upstream routing, usage, and credits.

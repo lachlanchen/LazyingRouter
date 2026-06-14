@@ -63,7 +63,7 @@ const FooterBar = () => {
                 </p>
                 <div className='flex flex-col gap-4'>
                   <a
-                    href='https://github.com/lachlanchen/LazyingRouter'
+                    href='https://github.com/lachlanchen/LazyRouter'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='!text-semi-color-text-1'
@@ -79,7 +79,7 @@ const FooterBar = () => {
                     {t('联系我们')}
                   </a>
                   <a
-                    href='https://github.com/lachlanchen/LazyingRouter/blob/main/README.md'
+                    href='https://github.com/lachlanchen/LazyRouter/blob/main/README.md'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='!text-semi-color-text-1'
@@ -95,7 +95,7 @@ const FooterBar = () => {
                 </p>
                 <div className='flex flex-col gap-4'>
                   <a
-                    href='https://github.com/lachlanchen/LazyingRouter/blob/main/README.md'
+                    href='https://github.com/lachlanchen/LazyRouter/blob/main/README.md'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='!text-semi-color-text-1'
@@ -103,7 +103,7 @@ const FooterBar = () => {
                     {t('快速开始')}
                   </a>
                   <a
-                    href='https://github.com/lachlanchen/LazyingRouter/blob/main/docs/lazyingrouter/README.md'
+                    href='https://github.com/lachlanchen/LazyRouter/blob/main/docs/lazyrouter/README.md'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='!text-semi-color-text-1'
@@ -111,7 +111,7 @@ const FooterBar = () => {
                     {t('安装指南')}
                   </a>
                   <a
-                    href='https://github.com/lachlanchen/LazyingRouter/tree/main/docs/openapi'
+                    href='https://github.com/lachlanchen/LazyRouter/tree/main/docs/openapi'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='!text-semi-color-text-1'
@@ -200,12 +200,12 @@ const FooterBar = () => {
               {t('设计与开发由')}{' '}
             </span>
             <a
-              href='https://github.com/lachlanchen/LazyingRouter'
+              href='https://github.com/lachlanchen/LazyRouter'
               target='_blank'
               rel='noopener noreferrer'
               className='!text-semi-color-primary font-medium'
             >
-              LazyingRouter
+              LazyRouter
             </a>
           </div>
         </div>
@@ -232,12 +232,12 @@ const FooterBar = () => {
                 {t('设计与开发由')}{' '}
               </span>
               <a
-                href='https://github.com/lachlanchen/LazyingRouter'
+                href='https://github.com/lachlanchen/LazyRouter'
                 target='_blank'
                 rel='noopener noreferrer'
                 className='!text-semi-color-primary font-medium'
               >
-                LazyingRouter
+                LazyRouter
               </a>
             </div>
           </div>

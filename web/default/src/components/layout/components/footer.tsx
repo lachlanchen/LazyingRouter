@@ -128,12 +128,12 @@ function ProjectAttribution(props: { currentYear: number; inline?: boolean }) {
     <span className='text-muted-foreground/45'>
       &copy; {props.currentYear}{' '}
       <a
-        href='https://github.com/lachlanchen/LazyingRouter'
+        href='https://github.com/lachlanchen/LazyRouter'
         target='_blank'
         rel='noopener noreferrer'
         className='text-foreground/70 hover:text-foreground font-medium transition-colors'
       >
-        {t('LazyingRouter')}
+        {t('LazyRouter')}
       </a>
       . {t(NEW_API_FOOTER_ATTRIBUTION_KEY)} {t('Based on New API.')}
     </span>
@@ -158,7 +158,7 @@ export function Footer(props: FooterProps) {
   } = useSystemConfig()
 
   const displayLogo = systemLogo || props.logo || '/logo.png'
-  const displayName = systemName || props.name || 'LazyingRouter'
+  const displayName = systemName || props.name || 'LazyRouter'
   const isDemoSiteMode = Boolean(demoSiteEnabled)
   const currentYear = new Date().getFullYear()
 
@@ -169,7 +169,7 @@ export function Footer(props: FooterProps) {
         links: [
           {
             text: t('footer.columns.about.links.aboutProject'),
-            href: 'https://github.com/lachlanchen/LazyingRouter',
+            href: 'https://github.com/lachlanchen/LazyRouter',
           },
           {
             text: t('footer.columns.about.links.contact'),
@@ -177,7 +177,7 @@ export function Footer(props: FooterProps) {
           },
           {
             text: t('footer.columns.about.links.features'),
-            href: 'https://github.com/lachlanchen/LazyingRouter/blob/main/README.md',
+            href: 'https://github.com/lachlanchen/LazyRouter/blob/main/README.md',
           },
         ],
       },
@@ -186,15 +186,15 @@ export function Footer(props: FooterProps) {
         links: [
           {
             text: t('footer.columns.docs.links.quickStart'),
-            href: 'https://github.com/lachlanchen/LazyingRouter/blob/main/README.md',
+            href: 'https://github.com/lachlanchen/LazyRouter/blob/main/README.md',
           },
           {
             text: t('footer.columns.docs.links.installation'),
-            href: 'https://github.com/lachlanchen/LazyingRouter/blob/main/docs/lazyingrouter/README.md',
+            href: 'https://github.com/lachlanchen/LazyRouter/blob/main/docs/lazyrouter/README.md',
           },
           {
             text: t('footer.columns.docs.links.apiDocs'),
-            href: 'https://github.com/lachlanchen/LazyingRouter/tree/main/docs/openapi',
+            href: 'https://github.com/lachlanchen/LazyRouter/tree/main/docs/openapi',
           },
         ],
       },

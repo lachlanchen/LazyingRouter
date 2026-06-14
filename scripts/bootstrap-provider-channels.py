@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Bootstrap LazyingRouter provider channels from local environment variables.
+"""Bootstrap LazyRouter provider channels from local environment variables.
 
 This script intentionally never prints API keys. It can be run on the host for
 dry-run checks, or inside a container/root context when the SQLite file is owned
-by the LazyingRouter Docker container.
+by the LazyRouter Docker container.
 """
 
 from __future__ import annotations
@@ -27,7 +27,7 @@ CHANNEL_TYPE_DEEPSEEK = 43
 PROVIDERS = [
     {
         "id": "openai",
-        "name": "LazyingRouter / OpenAI",
+        "name": "LazyRouter / OpenAI",
         "type": CHANNEL_TYPE_OPENAI,
         "key_env": ["OPENAI_API_KEY"],
         "base_url_env": ["OPENAI_BASE_URL"],
@@ -50,7 +50,7 @@ PROVIDERS = [
     },
     {
         "id": "openrouter",
-        "name": "LazyingRouter / OpenRouter",
+        "name": "LazyRouter / OpenRouter",
         "type": CHANNEL_TYPE_OPENROUTER,
         "key_env": ["OPENROUTER_API_KEY"],
         "base_url_env": ["OPENROUTER_BASE_URL"],
@@ -68,12 +68,12 @@ PROVIDERS = [
         "weight": 100,
         "header_override": {
             "HTTP-Referer": "https://router.lazying.art",
-            "X-OpenRouter-Title": "LazyingRouter",
+            "X-OpenRouter-Title": "LazyRouter",
         },
     },
     {
         "id": "deepseek",
-        "name": "LazyingRouter / DeepSeek",
+        "name": "LazyRouter / DeepSeek",
         "type": CHANNEL_TYPE_DEEPSEEK,
         "key_env": ["DEEPSEEK_API_KEY"],
         "base_url_env": ["DEEPSEEK_BASE_URL"],
@@ -86,7 +86,7 @@ PROVIDERS = [
     },
     {
         "id": "venice",
-        "name": "LazyingRouter / Venice",
+        "name": "LazyRouter / Venice",
         "type": CHANNEL_TYPE_OPENAI,
         "key_env": ["VENICE_API_KEY"],
         "base_url_env": ["VENICE_BASE_URL"],
@@ -101,7 +101,7 @@ PROVIDERS = [
     },
     {
         "id": "grsai",
-        "name": "LazyingRouter / GRSAI Compatible",
+        "name": "LazyRouter / GRSAI Compatible",
         "type": CHANNEL_TYPE_OPENAI,
         "key_env": ["GRSAI_API_KEY", "GRSAI"],
         "base_url_env": ["GRSAI_OPENAI_BASE_URL", "GRSAI_BASE_URL"],
@@ -122,8 +122,8 @@ PROVIDERS = [
 
 
 DEFAULT_DB_CANDIDATES = [
-    "/tmp/lazying-router-dev-data/lazyingrouter.sqlite",
-    "./data/lazyingrouter.sqlite",
+    "/tmp/lazy-router-dev-data/lazyrouter.sqlite",
+    "./data/lazyrouter.sqlite",
 ]
 
 
@@ -175,7 +175,7 @@ def split_models(raw: str | None) -> list[str]:
 def db_path_from_args(args: argparse.Namespace, env: dict[str, str]) -> str:
     if args.db:
         return args.db
-    for name in ("LAZYINGROUTER_SQLITE_PATH", "SQLITE_PATH"):
+    for name in ("LAZYROUTER_SQLITE_PATH", "LAZYINGROUTER_SQLITE_PATH", "SQLITE_PATH"):
         value = env.get(name, "").strip()
         if value:
             return value
@@ -189,7 +189,7 @@ def fetch_models(provider: dict, key: str, base_url: str, limit: int) -> list[st
     endpoint = base_url.rstrip("/") + "/v1/models"
     headers = {
         "Authorization": "Bearer " + key,
-        "User-Agent": "LazyingRouter provider bootstrap",
+        "User-Agent": "LazyRouter provider bootstrap",
     }
     headers.update(provider.get("header_override") or {})
     req = urllib.request.Request(endpoint, headers=headers, method="GET")
@@ -281,7 +281,7 @@ def upsert_channel(conn: sqlite3.Connection, provider: dict, group: str) -> tupl
         "status_code_mapping": "{}",
         "priority": provider.get("priority", 0),
         "auto_ban": 1,
-        "tag": "lazyingrouter-provider",
+        "tag": "lazyrouter-provider",
         "setting": "{}",
         "param_override": "{}",
         "header_override": json.dumps(provider.get("header_override") or {}, separators=(",", ":")),
@@ -321,7 +321,7 @@ def upsert_channel(conn: sqlite3.Connection, provider: dict, group: str) -> tupl
                 1,
                 provider.get("priority", 0),
                 provider.get("weight", 100),
-                "lazyingrouter-provider",
+                "lazyrouter-provider",
             ),
         )
     return channel_id, action
@@ -349,12 +349,16 @@ def enable_root_unpriced_models(conn: sqlite3.Connection) -> int:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Bootstrap LazyingRouter provider channels from environment variables.")
+    parser = argparse.ArgumentParser(description="Bootstrap LazyRouter provider channels from environment variables.")
     parser.add_argument("--apply", action="store_true", help="Write channels to SQLite. Default is dry-run.")
-    parser.add_argument("--db", help="Path to lazyingrouter.sqlite. Defaults to SQLITE_PATH or local Docker dev path.")
+    parser.add_argument("--db", help="Path to lazyrouter.sqlite. Defaults to SQLITE_PATH or local Docker dev path.")
     parser.add_argument("--env-file", action="append", default=[], help="Additional dotenv file to load.")
     parser.add_argument("--provider", action="append", help="Provider id to include. Can be repeated.")
-    parser.add_argument("--group", default=os.environ.get("LAZYINGROUTER_GROUP", "default"), help="LazyingRouter group to attach abilities to.")
+    parser.add_argument(
+        "--group",
+        default=os.environ.get("LAZYROUTER_GROUP") or os.environ.get("LAZYINGROUTER_GROUP", "default"),
+        help="LazyRouter group to attach abilities to. Legacy LAZYINGROUTER_GROUP is accepted as a fallback.",
+    )
     parser.add_argument("--fetch-models", action="store_true", help="Fetch /v1/models from providers that have keys.")
     parser.add_argument("--fetch-limit", type=int, default=80, help="Maximum fetched models per provider.")
     parser.add_argument(
@@ -364,7 +368,14 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    default_env_files = [".env", ".env.local", ".env.lazyingrouter", ".env.lazyingrouter.local"]
+    default_env_files = [
+        ".env",
+        ".env.local",
+        ".env.lazyrouter",
+        ".env.lazyrouter.local",
+        ".env.lazyingrouter",
+        ".env.lazyingrouter.local",
+    ]
     env = load_env([*default_env_files, *args.env_file])
     selected = set(args.provider or [])
     db_path = db_path_from_args(args, env)
@@ -379,7 +390,7 @@ def main() -> int:
     resolved = [resolved_provider(p, env, args.fetch_models, args.fetch_limit) for p in providers]
     ready = [p for p in resolved if not p["skip_reason"]]
 
-    print(f"LazyingRouter provider bootstrap ({'apply' if args.apply else 'dry-run'})")
+    print(f"LazyRouter provider bootstrap ({'apply' if args.apply else 'dry-run'})")
     print(f"db={db_path}")
     print(f"group={args.group}")
     for provider in resolved:
@@ -423,7 +434,7 @@ def main() -> int:
                 print(f"root/admin unpriced-model access updated for {changed} user(s)")
     finally:
         conn.close()
-    print("Done. Restart LazyingRouter so the running process reloads channel cache.")
+    print("Done. Restart LazyRouter so the running process reloads channel cache.")
     return 0
 
 

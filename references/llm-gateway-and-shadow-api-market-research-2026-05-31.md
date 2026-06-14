@@ -2,7 +2,7 @@
 
 Date: 2026-05-31
 
-Purpose: document the current LLM gateway, proxy, router, and shadow-API landscape for LazyingRouter product design. This note is a product and security reference, not legal advice.
+Purpose: document the current LLM gateway, proxy, router, and shadow-API landscape for LazyRouter product design. This note is a product and security reference, not legal advice.
 
 ## Executive Summary
 
@@ -17,7 +17,7 @@ Recommended defaults:
 - Fastest hosted aggregator for testing: OpenRouter.
 - Best self-hosted proxy/control plane: LiteLLM.
 - Best enterprise governance product: Portkey.
-- Best base for LazyingRouter right now: New API plus LazyingRouter-specific trust policy, account credits, usage metering, and provider-class metadata.
+- Best base for LazyRouter right now: New API plus LazyRouter-specific trust policy, account credits, usage metering, and provider-class metadata.
 - Avoid for sensitive workloads: grey-market/shadow APIs, including claude-api.org, unless the task is explicitly low-risk and disposable.
 
 ## Practical Ranking
@@ -46,14 +46,14 @@ A serious gateway should do more than forward requests:
 - Expose auditable policy: who can use which model, which provider class is allowed, and under what data-sensitivity level.
 - Preserve model identity and upstream response metadata so downstream apps can verify what actually answered.
 
-For LazyingRouter, the durable application contract should be internal model aliases such as `lazying/auto`, `lazying/fast`, `lazying/main`, `lazying/reasoning`, or `lazying/writer`. Provider-specific names should live behind router configuration.
+For LazyRouter, the durable application contract should be internal model aliases such as `lazying/auto`, `lazying/fast`, `lazying/main`, `lazying/reasoning`, or `lazying/writer`. Provider-specific names should live behind router configuration.
 
 ## Provider Comparison
 
-| Provider | Hosted or Self-hosted | Auth Model | Routing and Fallback | Privacy and Logging | LazyingRouter Use |
+| Provider | Hosted or Self-hosted | Auth Model | Routing and Fallback | Privacy and Logging | LazyRouter Use |
 | --- | --- | --- | --- | --- | --- |
 | OpenRouter | Hosted | OpenRouter API key and OpenRouter credits | Provider routing, fallback, load balancing, provider filters | Prompts pass through OpenRouter and upstream provider; private logging controls and provider privacy filters exist | Good upstream fallback or prototype provider. Do not make it the only long-term control plane. |
-| LiteLLM | Self-hosted or hosted enterprise | Proxy master/virtual keys; upstream keys usually controlled by operator | Broad routing, fallbacks, health checks, budgets, tag routing | Self-hosting avoids adding an extra hosted intermediary beyond chosen upstream provider | Strong option behind LazyingRouter or as a reference implementation for routing policy. |
+| LiteLLM | Self-hosted or hosted enterprise | Proxy master/virtual keys; upstream keys usually controlled by operator | Broad routing, fallbacks, health checks, budgets, tag routing | Self-hosting avoids adding an extra hosted intermediary beyond chosen upstream provider | Strong option behind LazyRouter or as a reference implementation for routing policy. |
 | Vercel AI Gateway | Hosted | Vercel gateway key or OIDC; BYOK available | Dynamic provider choice, fallbacks, provider ordering | Good Vercel ecosystem defaults, but still adds Vercel in path | Useful for Vercel products, less ideal as general CLI/research control plane. |
 | Portkey | Hosted, self-hosted, hybrid, air-gapped | Portkey gateway keys and centrally managed upstream keys | Retries, load balancing, canary routing, caching | Strong audit/logging/retention story, especially enterprise deployments | Best governance reference for admin UI and policy design. |
 | Requesty | Hosted | Requesty API key | Smart routing, failover, caching, compatible endpoints | Privacy behavior is product/mode dependent; verify EU/zero-retention claims before relying on them | Interesting hosted competitor; useful feature benchmark. |
@@ -81,7 +81,7 @@ Not proven from public evidence alone:
 
 Practical policy:
 
-- Do not route sensitive LazyingRouter traffic through claude-api.org.
+- Do not route sensitive LazyRouter traffic through claude-api.org.
 - If a user insists on configuring it, mark the channel as `high_risk_shadow_api`.
 - Disable it by default for code, manuscripts, private research, private business data, secrets, or any regulated data.
 - Require explicit admin acknowledgement before enabling it.
@@ -98,7 +98,7 @@ The research record since 2024 points to the same core risks:
 - Stolen API-key resale and LLMjacking are already practical attack patterns.
 - Self-hosted gateways still need supply-chain hygiene, version pinning, credential rotation, and restricted outbound access.
 
-Product implications for LazyingRouter:
+Product implications for LazyRouter:
 
 - Treat the router as a high-value credential concentrator.
 - Do not log full prompts by default.
@@ -107,13 +107,13 @@ Product implications for LazyingRouter:
 - Add a visible provider trust level to the admin UI and API.
 - Make user-facing model aliases stable while upstream routing stays configurable.
 
-## Recommended LazyingRouter Architecture
+## Recommended LazyRouter Architecture
 
 Preferred deployment path:
 
 ```text
 AgInTiFlow / AAPS / apps
-  -> LazyingRouter OpenAI-compatible API
+  -> LazyRouter OpenAI-compatible API
     -> official provider keys
     -> self-hosted LiteLLM or official provider gateways
     -> OpenRouter as optional hosted breadth/fallback
@@ -122,8 +122,8 @@ AgInTiFlow / AAPS / apps
 
 Key design rules:
 
-- LazyingRouter should own users, credits, quotas, usage records, provider policy, model aliases, and channel risk levels.
-- Provider adapters should not define LazyingRouter semantics.
+- LazyRouter should own users, credits, quotas, usage records, provider policy, model aliases, and channel risk levels.
+- Provider adapters should not define LazyRouter semantics.
 - Every upstream channel should have an explicit `provider_class`.
 - Every model alias should have an explicit routing policy.
 - Every high-risk provider should require an opt-in policy waiver.
@@ -140,7 +140,7 @@ provider_classes:
     examples: [openrouter, vercel_ai_gateway, requesty, cloudflare_ai_gateway, helicone_hosted, portkey_hosted]
     default_sensitive_allowed: review_required
   self_hosted_gateway:
-    examples: [litellm_self_hosted, portkey_self_hosted, lazyingrouter_internal]
+    examples: [litellm_self_hosted, portkey_self_hosted, lazyrouter_internal]
     default_sensitive_allowed: true
   shadow_api:
     examples: [claude-api.org, transfer_station, pooled_account_proxy]
@@ -212,7 +212,7 @@ export LLM_MODEL="anthropic/claude-sonnet-4.5"
 export LLM_BASE_URL="https://router.requesty.ai/v1"
 export LLM_MODEL="anthropic/claude-sonnet-4.5"
 
-# LazyingRouter
+# LazyRouter
 export LLM_BASE_URL="https://router.lazying.art/v1"
 export LLM_MODEL="lazying/auto"
 ```
@@ -244,14 +244,14 @@ general_settings:
 
 This keeps application code stable while router policy changes behind the base URL and model alias.
 
-## LazyingRouter Engineering Backlog From This Research
+## LazyRouter Engineering Backlog From This Research
 
 1. Add `provider_class`, `trust_level`, `sensitive_allowed`, and `requires_admin_ack` fields for channels.
 2. Add admin UI warnings for hosted gateways and hard warnings for shadow APIs.
 3. Add a per-request sensitivity flag, with safe defaults for code, manuscripts, secrets, private research, and customer data.
 4. Add a policy layer that blocks high-risk channels for sensitive requests unless explicitly overridden.
 5. Add stable model aliases and routing profiles: `lazying/fast`, `lazying/main`, `lazying/reasoning`, `lazying/writer`, and `lazying/auto`.
-6. Add an AgInTiFlow provider adapter for LazyingRouter using the OpenAI-compatible endpoint and usage/credits API.
+6. Add an AgInTiFlow provider adapter for LazyRouter using the OpenAI-compatible endpoint and usage/credits API.
 7. Add usage and credit APIs that AgInTiFlow can query after login.
 8. Add retention controls: operational metadata retention, prompt/output retention, and audit-log retention should be configured separately.
 9. Add upstream response metadata preservation so callers can see the actual provider/channel/model used.
@@ -291,4 +291,4 @@ Security and market-risk references to verify before quoting in public marketing
 
 ## Bottom Line
 
-LazyingRouter should not present itself as just another proxy. The valuable product is a trusted control plane: user accounts, credits, model aliases, routing policy, provider trust metadata, usage accounting, and safe defaults. OpenRouter is the best hosted benchmark for breadth, LiteLLM is the best self-hosted benchmark for control, and Portkey is the best governance benchmark. Shadow APIs should be explicitly classified and blocked for sensitive work by default.
+LazyRouter should not present itself as just another proxy. The valuable product is a trusted control plane: user accounts, credits, model aliases, routing policy, provider trust metadata, usage accounting, and safe defaults. OpenRouter is the best hosted benchmark for breadth, LiteLLM is the best self-hosted benchmark for control, and Portkey is the best governance benchmark. Shadow APIs should be explicitly classified and blocked for sensitive work by default.

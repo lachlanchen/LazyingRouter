@@ -1,22 +1,22 @@
-# AgInTiFlow Account Login Design For LazyingRouter
+# AgInTiFlow Account Login Design For LazyRouter
 
 Date: 2026-05-31
 
-Purpose: define how LazyingRouter should let a paid user authorize AgInTiFlow without exposing upstream provider keys, while keeping LazyingRouter's existing token, quota, model routing, and billing logic consistent.
+Purpose: define how LazyRouter should let a paid user authorize AgInTiFlow without exposing upstream provider keys, while keeping LazyRouter's existing token, quota, model routing, and billing logic consistent.
 
 ## Product Goal
 
 A normal user should be able to:
 
 1. Install AgInTiFlow.
-2. Run `aginti login lazyingrouter` or click "Login with LazyingRouter".
-3. Sign in or register on LazyingRouter.
-4. Pay or top up in LazyingRouter.
+2. Run `aginti login lazyrouter` or click "Login with LazyRouter".
+3. Sign in or register on LazyRouter.
+4. Pay or top up in LazyRouter.
 5. Use AgInTiFlow immediately through `https://router.lazying.art/v1`.
 
-The user should not paste OpenAI, DeepSeek, Venice, OpenRouter, GRS AI, Claude, or other upstream provider keys into AgInTiFlow. LazyingRouter should be the account, billing, quota, and provider-routing authority.
+The user should not paste OpenAI, DeepSeek, Venice, OpenRouter, GRS AI, Claude, or other upstream provider keys into AgInTiFlow. LazyRouter should be the account, billing, quota, and provider-routing authority.
 
-## Current LazyingRouter State
+## Current LazyRouter State
 
 Relevant source files:
 
@@ -31,7 +31,7 @@ Relevant source files:
 
 The existing foundation is close to what AgInTiFlow needs:
 
-- Users already register and log in through LazyingRouter.
+- Users already register and log in through LazyRouter.
 - Users already own API tokens.
 - Tokens already have status, expiration, model limits, group, used quota, remaining quota, and unlimited quota flags.
 - Relay routes already accept `Authorization: Bearer sk-...`.
@@ -39,7 +39,7 @@ The existing foundation is close to what AgInTiFlow needs:
 - Usage status already exists under `/api/usage/token/` with read-only token auth.
 - OpenAI-compatible billing status exists under `/dashboard/billing/*` and `/v1/dashboard/billing/*`.
 
-The missing product piece is a trusted app authorization flow that creates or rotates a normal LazyingRouter token for AgInTiFlow without forcing the user to manually create, reveal, and paste a key.
+The missing product piece is a trusted app authorization flow that creates or rotates a normal LazyRouter token for AgInTiFlow without forcing the user to manually create, reveal, and paste a key.
 
 ## Current Token Behavior
 
@@ -72,10 +72,10 @@ Add a device/app authorization layer on top of existing users and tokens.
 
 Do not build a full OAuth provider first. The minimal design is:
 
-- LazyingRouter session login remains the user login source.
-- AgInTiFlow receives one normal LazyingRouter API token after the user approves the device.
+- LazyRouter session login remains the user login source.
+- AgInTiFlow receives one normal LazyRouter API token after the user approves the device.
 - That token is visible in the user's token list, revocable, model-limited, and usage-tracked.
-- LazyingRouter enforces user balance and token validity on every `/v1` request.
+- LazyRouter enforces user balance and token validity on every `/v1` request.
 
 The implicit AgInTiFlow token should behave like a normal user API token, not like an upstream provider key.
 
@@ -98,7 +98,7 @@ Content-Type: application/json
 }
 ```
 
-LazyingRouter creates a pending authorization record and returns:
+LazyRouter creates a pending authorization record and returns:
 
 ```json
 {
@@ -121,7 +121,7 @@ Browser URL:
 /app-auth/authorize?device_code=...
 ```
 
-If the user is not logged in, LazyingRouter shows normal login/register first. After login, the page shows:
+If the user is not logged in, LazyRouter shows normal login/register first. After login, the page shows:
 
 - App: AgInTiFlow.
 - Device name.
@@ -132,14 +132,14 @@ If the user is not logged in, LazyingRouter shows normal login/register first. A
 
 ### 3. Token Creation
 
-On approval, LazyingRouter creates or rotates a token:
+On approval, LazyRouter creates or rotates a token:
 
 ```text
 Name: AgInTiFlow - <device_name>
 UserId: current user id
 Group: user's selected/default group
 ModelLimitsEnabled: true
-ModelLimits: curated LazyingRouter model aliases and allowed direct model names
+ModelLimits: curated LazyRouter model aliases and allowed direct model names
 ExpiredTime: recommended 90 days to 1 year, or -1 for no expiry if policy allows
 Status: enabled
 ```
@@ -245,7 +245,7 @@ Suggested normalized status response:
 }
 ```
 
-AgInTiFlow can call this before runs, but LazyingRouter must still enforce quota during every relay request.
+AgInTiFlow can call this before runs, but LazyRouter must still enforce quota during every relay request.
 
 ## Endpoints To Add
 
@@ -297,7 +297,7 @@ The raw device code should not be stored.
 
 ## Token UI Requirements
 
-In the LazyingRouter dashboard, an AgInTiFlow token should be understandable:
+In the LazyRouter dashboard, an AgInTiFlow token should be understandable:
 
 - Label: `AgInTiFlow`.
 - Device: hostname/project label.
@@ -312,7 +312,7 @@ This prevents hidden "magic" tokens while avoiding manual key copy/paste.
 
 ## Model Alias Contract
 
-Expose stable LazyingRouter aliases to AgInTiFlow:
+Expose stable LazyRouter aliases to AgInTiFlow:
 
 ```text
 lazying/auto
@@ -323,7 +323,7 @@ lazying/writer
 lazying/coder
 ```
 
-Provider-specific upstream model names should stay behind LazyingRouter channel and routing configuration. This lets AgInTiFlow keep stable defaults while LazyingRouter changes provider mix, fallback, pricing, or risk policy.
+Provider-specific upstream model names should stay behind LazyRouter channel and routing configuration. This lets AgInTiFlow keep stable defaults while LazyRouter changes provider mix, fallback, pricing, or risk policy.
 
 ## Security Rules
 
@@ -343,12 +343,12 @@ Provider-specific upstream model names should stay behind LazyingRouter channel 
 AgInTiFlow will store:
 
 ```env
-LAZYINGROUTER_API_KEY=sk-...
-LAZYINGROUTER_BASE_URL=https://router.lazying.art/v1
-LAZYINGROUTER_MODEL=lazying/auto
-LAZYINGROUTER_ACCOUNT_URL=https://router.lazying.art
-LAZYINGROUTER_TOKEN_ID=123
-LAZYINGROUTER_USER_ID=456
+LAZYROUTER_API_KEY=sk-...
+LAZYROUTER_BASE_URL=https://router.lazying.art/v1
+LAZYROUTER_MODEL=lazying/auto
+LAZYROUTER_ACCOUNT_URL=https://router.lazying.art
+LAZYROUTER_TOKEN_ID=123
+LAZYROUTER_USER_ID=456
 ```
 
 AgInTiFlow will call:
@@ -376,7 +376,7 @@ with model `lazying/auto` by default.
 
 ## Acceptance Tests
 
-Minimum LazyingRouter TDV tests:
+Minimum LazyRouter TDV tests:
 
 1. Fresh user can register, top up, and authorize AgInTiFlow without seeing upstream keys.
 2. Device flow returns a token only after browser approval.
@@ -403,7 +403,7 @@ Minimum LazyingRouter TDV tests:
 
 - Do not implement a complete third-party OAuth platform unless another app needs it.
 - Do not expose upstream provider keys.
-- Do not make AgInTiFlow know LazyingRouter channel internals.
+- Do not make AgInTiFlow know LazyRouter channel internals.
 - Do not make users manually copy token keys for the normal path.
 - Do not merge app tokens with external OAuth access tokens; keep them as user API tokens with app metadata.
 

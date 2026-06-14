@@ -57,24 +57,24 @@ function EmptyAboutState() {
         </div>
         <div className='space-y-4 text-sm'>
           <p>
-            {t('LazyingRouter Project Repository:')}{' '}
+            {t('LazyRouter Project Repository:')}{' '}
             <a
-              href='https://github.com/lachlanchen/LazyingRouter'
+              href='https://github.com/lachlanchen/LazyRouter'
               target='_blank'
               rel='noopener noreferrer'
               className='text-primary hover:underline'
             >
-              https://github.com/lachlanchen/LazyingRouter
+              https://github.com/lachlanchen/LazyRouter
             </a>
           </p>
           <p className='text-muted-foreground'>
             <a
-              href='https://github.com/lachlanchen/LazyingRouter'
+              href='https://github.com/lachlanchen/LazyRouter'
               target='_blank'
               rel='noopener noreferrer'
               className='text-primary hover:underline'
             >
-              {t('LazyingRouter')}
+              {t('LazyRouter')}
             </a>{' '}
             © {currentYear}{' '}
             <a
@@ -116,7 +116,7 @@ function EmptyAboutState() {
           <p className='text-muted-foreground'>
             {t('This project must be used in compliance with the')}{' '}
             <a
-              href='https://github.com/lachlanchen/LazyingRouter/blob/main/LICENSE'
+              href='https://github.com/lachlanchen/LazyRouter/blob/main/LICENSE'
               target='_blank'
               rel='noopener noreferrer'
               className='text-primary hover:underline'

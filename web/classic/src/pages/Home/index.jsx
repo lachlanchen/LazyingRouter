@@ -231,7 +231,7 @@ const Home = () => {
                       icon={<IconGithubLogo />}
                       onClick={() =>
                         window.open(
-                          'https://github.com/lachlanchen/LazyingRouter',
+                          'https://github.com/lachlanchen/LazyRouter',
                           '_blank',
                         )
                       }

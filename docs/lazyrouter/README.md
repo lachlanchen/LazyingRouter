@@ -4,9 +4,9 @@
   </a>
 </p>
 
-# LazyingRouter Adaptation Plan
+# LazyRouter Adaptation Plan
 
-LazyingRouter is a private AI API aggregator built on top of the mature open-source New API gateway. The goal is to provide OpenRouter-like account, key, quota, and routing behavior while preserving upstream mergeability.
+LazyRouter is a private AI API aggregator built on top of the mature open-source New API gateway. The goal is to provide OpenRouter-like account, key, quota, and routing behavior while preserving upstream mergeability.
 
 ## Base Project
 
@@ -21,9 +21,9 @@ Why this base is appropriate:
 
 Keep upstream attribution and AGPL obligations intact. Do not remove license notices.
 
-## LazyingRouter Product Contract
+## LazyRouter Product Contract
 
-LazyingRouter owns:
+LazyRouter owns:
 
 - User registration and login.
 - User credits and quotas.
@@ -40,13 +40,13 @@ Upstream providers own:
 - Provider-side billing and rate limits.
 - Provider-specific model availability.
 
-AgInTiFlow should treat LazyingRouter as a first-class provider with one account/API key, then consume usage and credit state from LazyingRouter instead of directly handling every upstream account.
+AgInTiFlow should treat LazyRouter as a first-class provider with one account/API key, then consume usage and credit state from LazyRouter instead of directly handling every upstream account.
 
 ## First Local Run
 
 ```bash
-cd /home/lachlan/ProjectsLFS/Agent/LazyingRouter
-cp .env.lazyingrouter.example .env
+cd /home/lachlan/ProjectsLFS/Agent/LazyRouter
+cp .env.lazyrouter.example .env
 go run . --port 3218
 ```
 
@@ -59,12 +59,12 @@ http://127.0.0.1:3218
 For container deployment:
 
 ```bash
-cd /home/lachlan/ProjectsLFS/Agent/LazyingRouter
+cd /home/lachlan/ProjectsLFS/Agent/LazyRouter
 SESSION_SECRET="$(openssl rand -hex 32)" \
 CRYPTO_SECRET="$(openssl rand -hex 32)" \
 POSTGRES_PASSWORD="$(openssl rand -hex 24)" \
 REDIS_PASSWORD="$(openssl rand -hex 24)" \
-docker compose -f docker-compose.lazyingrouter.yml up -d --build
+docker compose -f docker-compose.lazyrouter.yml up -d --build
 ```
 
 ## Provider Channel Mapping
@@ -139,26 +139,26 @@ Use either Anthropic-compatible or OpenAI-compatible channel mode depending on t
    - `lazying/vision`
    - `lazying/image`
 6. Assign user groups and quotas.
-7. Create one user API token and verify OpenAI-compatible calls through LazyingRouter.
+7. Create one user API token and verify OpenAI-compatible calls through LazyRouter.
 
 ## AgInTiFlow Integration Target
 
 AgInTiFlow should later add:
 
-- `LAZYINGROUTER_API_KEY`
-- `LAZYINGROUTER_BASE_URL`, defaulting to `http://127.0.0.1:3218/v1` for local testing.
-- `LAZYINGROUTER_MODEL`, defaulting to `lazying/auto`.
-- `/auth lazyingrouter` and `aginti keys set lazyingrouter`.
-- Web settings provider option: `LazyingRouter`.
+- `LAZYROUTER_API_KEY`
+- `LAZYROUTER_BASE_URL`, defaulting to `http://127.0.0.1:3218/v1` for local testing.
+- `LAZYROUTER_MODEL`, defaulting to `lazying/auto`.
+- `/auth lazyrouter` and `aginti keys set lazyrouter`.
+- Web settings provider option: `LazyRouter`.
 - Usage endpoint integration for credits and remaining quota.
 
 Minimal client config:
 
 ```text
-provider=lazyingrouter
+provider=lazyrouter
 baseURL=http://127.0.0.1:3218/v1
 model=lazying/auto
-apiKey=<user-issued LazyingRouter API key>
+apiKey=<user-issued LazyRouter API key>
 ```
 
 ## Non-Negotiable Security Rules

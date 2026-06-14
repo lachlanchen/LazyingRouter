@@ -4,9 +4,9 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-SESSION="${LAZYINGROUTER_TMUX_SESSION:-lazyingrouter}"
+SESSION="${LAZYROUTER_TMUX_SESSION:-${LAZYINGROUTER_TMUX_SESSION:-lazyrouter}}"
 PORT="${PORT:-3218}"
-COMPOSE_FILE="${LAZYINGROUTER_COMPOSE_FILE:-docker-compose.lazyingrouter.yml}"
+COMPOSE_FILE="${LAZYROUTER_COMPOSE_FILE:-${LAZYINGROUTER_COMPOSE_FILE:-docker-compose.lazyrouter.yml}}"
 HEALTH_URL="http://127.0.0.1:${PORT}/api/status"
 APP_URL="http://127.0.0.1:${PORT}/"
 
@@ -14,17 +14,20 @@ usage() {
   cat <<USAGE
 Usage: $0 [--session NAME] [--port PORT] [--restart]
 
-Starts or reuses LazyingRouter in a tmux session using tmux send-keys.
+Starts or reuses LazyRouter in a tmux session using tmux send-keys.
 
 Environment:
-  LAZYINGROUTER_TMUX_SESSION  tmux session name, default: lazyingrouter
+  LAZYROUTER_TMUX_SESSION  tmux session name, default: lazyrouter
   PORT                         host port, default: 3218
-  LAZYINGROUTER_COMPOSE_FILE   compose file, default: docker-compose.lazyingrouter.yml
+  LAZYROUTER_COMPOSE_FILE   compose file, default: docker-compose.lazyrouter.yml
+
+Legacy LAZYINGROUTER_* helper variables are still accepted when the new
+LAZYROUTER_* variables are not set.
 
 Examples:
   $0
   $0 --port 3219
-  $0 --session lazyingrouter --restart
+  $0 --session lazyrouter --restart
 USAGE
 }
 
@@ -81,16 +84,16 @@ if ! tmux has-session -t "${SESSION}" 2>/dev/null; then
   tmux new-session -d -s "${SESSION}" -c "${REPO_ROOT}"
   tmux send-keys -t "${SESSION}" "cd '${REPO_ROOT}'" C-m
   tmux send-keys -t "${SESSION}" "export PORT='${PORT}'" C-m
-  tmux send-keys -t "${SESSION}" "echo 'LazyingRouter tmux session: ${SESSION}'" C-m
+  tmux send-keys -t "${SESSION}" "echo 'LazyRouter tmux session: ${SESSION}'" C-m
   tmux send-keys -t "${SESSION}" "echo 'URL: ${APP_URL}'" C-m
   tmux send-keys -t "${SESSION}" "echo 'Health: ${HEALTH_URL}'" C-m
-  tmux send-keys -t "${SESSION}" "if curl -fsS '${HEALTH_URL}' >/dev/null 2>&1; then echo 'LazyingRouter is already healthy; following container logs.'; docker logs -f --tail=120 lazying-router-dev 2>/dev/null || docker logs -f --tail=120 lazying-router 2>/dev/null || exec bash; else echo 'Starting LazyingRouter with docker compose...'; docker compose -f '${COMPOSE_FILE}' up --build; fi" C-m
+  tmux send-keys -t "${SESSION}" "if curl -fsS '${HEALTH_URL}' >/dev/null 2>&1; then echo 'LazyRouter is already healthy; following container logs.'; docker logs -f --tail=120 lazy-router-dev 2>/dev/null || docker logs -f --tail=120 lazy-router 2>/dev/null || exec bash; else echo 'Starting LazyRouter with docker compose...'; docker compose -f '${COMPOSE_FILE}' up --build; fi" C-m
 fi
 
 if curl -fsS "${HEALTH_URL}" >/dev/null 2>&1; then
-  echo "LazyingRouter is available: ${APP_URL}"
+  echo "LazyRouter is available: ${APP_URL}"
 else
-  echo "LazyingRouter is starting: ${APP_URL}"
+  echo "LazyRouter is starting: ${APP_URL}"
   echo "Health check pending: ${HEALTH_URL}"
 fi
 

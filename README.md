@@ -4,7 +4,7 @@
   </a>
 </p>
 
-<h1 align="center">LazyingRouter</h1>
+<h1 align="center">LazyRouter</h1>
 
 <p align="center">
   <strong>A private AI API gateway for accounts, user keys, credits, model routing, and upstream provider aggregation.</strong>
@@ -13,38 +13,38 @@
 <p align="center">
   <a href="https://router.lazying.art">router.lazying.art</a>
   ·
-  <a href="docs/lazyingrouter/README.md">Operator guide</a>
+  <a href="docs/lazyrouter/README.md">Operator guide</a>
   ·
-  <a href="docs/lazyingrouter/provider-setup.md">Provider setup</a>
+  <a href="docs/lazyrouter/provider-setup.md">Provider setup</a>
   ·
   <a href="README.en.md">Upstream New API docs</a>
 </p>
 
 <p align="center">
   English |
-  <a href="docs/lazyingrouter/i18n/README.zh-Hans.md">简体中文</a> |
-  <a href="docs/lazyingrouter/i18n/README.zh-Hant.md">繁體中文</a> |
-  <a href="docs/lazyingrouter/i18n/README.ja.md">日本語</a> |
-  <a href="docs/lazyingrouter/i18n/README.fr.md">Français</a> |
-  <a href="docs/lazyingrouter/i18n/README.de.md">Deutsch</a> |
-  <a href="docs/lazyingrouter/i18n/README.es.md">Español</a> |
-  <a href="docs/lazyingrouter/i18n/README.ko.md">한국어</a> |
-  <a href="docs/lazyingrouter/i18n/README.ru.md">Русский</a> |
-  <a href="docs/lazyingrouter/i18n/README.pt.md">Português</a> |
-  <a href="docs/lazyingrouter/i18n/README.ar.md">العربية</a>
+  <a href="docs/lazyrouter/i18n/README.zh-Hans.md">简体中文</a> |
+  <a href="docs/lazyrouter/i18n/README.zh-Hant.md">繁體中文</a> |
+  <a href="docs/lazyrouter/i18n/README.ja.md">日本語</a> |
+  <a href="docs/lazyrouter/i18n/README.fr.md">Français</a> |
+  <a href="docs/lazyrouter/i18n/README.de.md">Deutsch</a> |
+  <a href="docs/lazyrouter/i18n/README.es.md">Español</a> |
+  <a href="docs/lazyrouter/i18n/README.ko.md">한국어</a> |
+  <a href="docs/lazyrouter/i18n/README.ru.md">Русский</a> |
+  <a href="docs/lazyrouter/i18n/README.pt.md">Português</a> |
+  <a href="docs/lazyrouter/i18n/README.ar.md">العربية</a>
 </p>
 
 ---
 
 ## What It Is
 
-LazyingRouter is a self-hosted AI API aggregator built from the mature open-source New API gateway. It lets an operator issue user API keys, assign credits and quotas, route model requests to authorized upstream providers, and inspect usage from a web dashboard.
+LazyRouter is a self-hosted AI API aggregator built from the mature open-source New API gateway. It lets an operator issue user API keys, assign credits and quotas, route model requests to authorized upstream providers, and inspect usage from a web dashboard.
 
-The immediate goal is to make AgInTiFlow and other LazyingArt tools login through one LazyingRouter account/API key, while LazyingRouter owns upstream routing, quota accounting, and provider credentials.
+The immediate goal is to make AgInTiFlow and other LazyingArt tools login through one LazyRouter account/API key, while LazyRouter owns upstream routing, quota accounting, and provider credentials.
 
 ## Why This Exists
 
-Directly wiring every application to OpenRouter, Venice, GRSAI, Claude-compatible providers, and future model providers becomes hard to audit and hard to bill. LazyingRouter centralizes that layer:
+Directly wiring every application to OpenRouter, Venice, GRSAI, Claude-compatible providers, and future model providers becomes hard to audit and hard to bill. LazyRouter centralizes that layer:
 
 - One account and one API key per user or app.
 - One admin panel for upstream provider keys.
@@ -77,13 +77,13 @@ Directly wiring every application to OpenRouter, Venice, GRSAI, Claude-compatibl
 | GRSAI | Image-generation channel/custom adaptor | Treat as image-first; only expose through an OpenAI-compatible channel when a compatible base URL and models are configured. |
 | claude-api.org | Claude Messages or OpenAI-compatible custom channel | Pick channel mode from the actual endpoint contract; do not assume Anthropic semantics. |
 
-See `docs/lazyingrouter/provider-setup.md` for the safe bootstrap command, environment variables, and client examples.
+See `docs/lazyrouter/provider-setup.md` for the safe bootstrap command, environment variables, and client examples.
 
 ## Local Development
 
 ```bash
-cd /home/lachlan/ProjectsLFS/Agent/LazyingRouter
-cp .env.lazyingrouter.example .env
+cd /home/lachlan/ProjectsLFS/Agent/LazyRouter
+cp .env.lazyrouter.example .env
 go run . --port 3218
 ```
 
@@ -96,12 +96,12 @@ http://127.0.0.1:3218
 If Go is not installed locally, use Docker:
 
 ```bash
-cd /home/lachlan/ProjectsLFS/Agent/LazyingRouter
+cd /home/lachlan/ProjectsLFS/Agent/LazyRouter
 SESSION_SECRET="$(openssl rand -hex 32)" \
 CRYPTO_SECRET="$(openssl rand -hex 32)" \
 POSTGRES_PASSWORD="$(openssl rand -hex 24)" \
 REDIS_PASSWORD="$(openssl rand -hex 24)" \
-docker compose -f docker-compose.lazyingrouter.yml up -d --build
+docker compose -f docker-compose.lazyrouter.yml up -d --build
 ```
 
 ## Verified Development Image
@@ -109,14 +109,14 @@ docker compose -f docker-compose.lazyingrouter.yml up -d --build
 The current fork has been verified with:
 
 ```bash
-docker build -t lazying-router:dev .
-docker run -d --name lazying-router-dev -p 3218:3000 \
-  -e SYSTEM_NAME=LazyingRouter \
-  -e FOOTER_HTML="LazyingRouter local dev gateway" \
-  -e SQLITE_PATH=/data/lazyingrouter.sqlite \
+docker build -t lazy-router:dev .
+docker run -d --name lazy-router-dev -p 3218:3000 \
+  -e SYSTEM_NAME=LazyRouter \
+  -e FOOTER_HTML="LazyRouter local dev gateway" \
+  -e SQLITE_PATH=/data/lazyrouter.sqlite \
   -e MEMORY_CACHE_ENABLED=true \
-  -v /tmp/lazying-router-dev-data:/data \
-  lazying-router:dev
+  -v /tmp/lazy-router-dev-data:/data \
+  lazy-router:dev
 curl -fsS http://127.0.0.1:3218/api/status
 ```
 
@@ -126,48 +126,48 @@ Expected status includes:
 {
   "success": true,
   "data": {
-    "system_name": "LazyingRouter"
+    "system_name": "LazyRouter"
   }
 }
 ```
 
 ## AgInTiFlow Integration Target
 
-AgInTiFlow should later add a `lazyingrouter` provider:
+AgInTiFlow should later add a `lazyrouter` provider:
 
 ```text
-LAZYINGROUTER_API_KEY=<user-issued LazyingRouter API key>
-LAZYINGROUTER_BASE_URL=https://router.lazying.art/v1
-LAZYINGROUTER_MODEL=lazying/auto
+LAZYROUTER_API_KEY=<user-issued LazyRouter API key>
+LAZYROUTER_BASE_URL=https://router.lazying.art/v1
+LAZYROUTER_MODEL=lazying/auto
 ```
 
 Local development defaults:
 
 ```text
-LAZYINGROUTER_BASE_URL=http://127.0.0.1:3218/v1
-LAZYINGROUTER_MODEL=lazying/auto
+LAZYROUTER_BASE_URL=http://127.0.0.1:3218/v1
+LAZYROUTER_MODEL=lazying/auto
 ```
 
 Planned AgInTiFlow commands:
 
 ```bash
-aginti auth lazyingrouter
-aginti keys set lazyingrouter
-aginti --provider lazyingrouter
+aginti auth lazyrouter
+aginti keys set lazyrouter
+aginti --provider lazyrouter
 ```
 
 ## Security Rules
 
 - Never commit upstream provider keys.
 - Never expose upstream provider keys to users.
-- Keep user-issued LazyingRouter API keys separate from operator upstream keys.
+- Keep user-issued LazyRouter API keys separate from operator upstream keys.
 - Disable public registration until email verification, abuse limits, payment policy, and legal/compliance requirements are configured.
 - Add upstream channels one by one and test each channel with low-cost requests before exposing it broadly.
 - Keep provider errors visible; do not hide missing quota, missing auth, or upstream rate limits as generic model errors.
 
 ## Upstream Attribution
 
-LazyingRouter is based on the open-source New API project:
+LazyRouter is based on the open-source New API project:
 
 - Upstream repository: <https://github.com/QuantumNous/new-api>
 - Upstream documentation: <https://docs.newapi.pro>

@@ -1,8 +1,8 @@
-# LazyingRouter Provider Setup
+# LazyRouter Provider Setup
 
-This document describes the supported upstream provider presets and the client-facing API contract for LazyingRouter.
+This document describes the supported upstream provider presets and the client-facing API contract for LazyRouter.
 
-LazyingRouter is an OpenAI-compatible gateway for client applications. Users should call LazyingRouter with a LazyingRouter-issued API token. Upstream provider keys stay on the server side as admin-managed channels.
+LazyRouter is an OpenAI-compatible gateway for client applications. Users should call LazyRouter with a LazyRouter-issued API token. Upstream provider keys stay on the server side as admin-managed channels.
 
 ## Client Contract
 
@@ -25,12 +25,12 @@ from openai import OpenAI
 
 client = OpenAI(
     base_url="http://127.0.0.1:3218/v1",
-    api_key="YOUR_LAZYINGROUTER_USER_TOKEN",
+    api_key="YOUR_LAZYROUTER_USER_TOKEN",
 )
 
 response = client.chat.completions.create(
     model="gpt-4o-mini",
-    messages=[{"role": "user", "content": "Say hello from LazyingRouter."}],
+    messages=[{"role": "user", "content": "Say hello from LazyRouter."}],
 )
 
 print(response.choices[0].message.content)
@@ -40,7 +40,7 @@ Curl example:
 
 ```bash
 curl http://127.0.0.1:3218/v1/chat/completions \
-  -H "Authorization: Bearer $LAZYINGROUTER_API_KEY" \
+  -H "Authorization: Bearer $LAZYROUTER_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "deepseek-chat",
@@ -53,7 +53,7 @@ curl http://127.0.0.1:3218/v1/chat/completions \
 | Provider | Channel type | Upstream base URL | Key variable | Model variable | Notes |
 | --- | --- | --- | --- | --- | --- |
 | OpenAI | Built-in OpenAI | `https://api.openai.com` | `OPENAI_API_KEY` | `OPENAI_MODELS` | Supports chat, embeddings, image/audio routes when the upstream model and route are enabled. |
-| OpenRouter | Built-in OpenRouter | `https://openrouter.ai/api` | `OPENROUTER_API_KEY` | `OPENROUTER_MODELS` | Adds LazyingRouter referer/title headers. Use `openrouter/auto` or provider-specific model ids. |
+| OpenRouter | Built-in OpenRouter | `https://openrouter.ai/api` | `OPENROUTER_API_KEY` | `OPENROUTER_MODELS` | Adds LazyRouter referer/title headers. Use `openrouter/auto` or provider-specific model ids. |
 | DeepSeek | Built-in DeepSeek | `https://api.deepseek.com` | `DEEPSEEK_API_KEY` | `DEEPSEEK_MODELS` | Defaults to `deepseek-chat` and `deepseek-reasoner`. |
 | Venice | OpenAI-compatible channel | `https://api.venice.ai/api` | `VENICE_API_KEY` | `VENICE_MODELS` | Configure text/chat models explicitly or use `--fetch-models`. Do not include `/v1` in `VENICE_BASE_URL` for this codebase. |
 | GRSAI | Optional OpenAI-compatible channel | set `GRSAI_OPENAI_BASE_URL` or `GRSAI_BASE_URL` | `GRSAI_API_KEY` or `GRSAI` | `GRSAI_MODELS` | Native GRS AI Nano Banana image calls are not OpenAI-compatible. Only add this preset when you have a compatible base URL/model list. |
@@ -65,7 +65,7 @@ Important base URL rule: New API appends paths like `/v1/chat/completions` to ch
 Dry-run first:
 
 ```bash
-cd /home/lachlan/ProjectsLFS/Agent/LazyingRouter
+cd /home/lachlan/ProjectsLFS/Agent/LazyRouter
 python3 scripts/bootstrap-provider-channels.py --fetch-models
 ```
 
@@ -83,21 +83,21 @@ docker run --rm \
   -e GRSAI_OPENAI_BASE_URL \
   -e GRSAI_BASE_URL \
   -e GRSAI_MODELS \
-  -v /tmp/lazying-router-dev-data:/data \
+  -v /tmp/lazy-router-dev-data:/data \
   -v "$PWD":/src \
   -w /src \
   python:3.12-alpine \
   python scripts/bootstrap-provider-channels.py \
-    --db /data/lazyingrouter.sqlite \
+    --db /data/lazyrouter.sqlite \
     --fetch-models \
     --allow-root-unpriced-models \
     --apply
 ```
 
-Then restart LazyingRouter so the running process reloads the channel cache:
+Then restart LazyRouter so the running process reloads the channel cache:
 
 ```bash
-docker restart lazying-router-dev
+docker restart lazy-router-dev
 ```
 
 The script prints only whether keys are present. It never prints raw key values.
@@ -106,7 +106,7 @@ The script prints only whether keys are present. It never prints raw key values.
 
 ## Environment Template
 
-Copy `.env.lazyingrouter.example` to `.env` for local development. Keep real provider keys out of git.
+Copy `.env.lazyrouter.example` to `.env` for local development. Keep real provider keys out of git.
 
 Common variables:
 
@@ -142,4 +142,4 @@ GRSAI_MODELS=
 
 ## Scope Caveat
 
-LazyingRouter can provide an OpenRouter-like API surface for configured providers, user keys, quotas, logs, and routing. It is not yet a full public marketplace until payments, public model catalog policy, provider terms review, abuse controls, and production observability are completed.
+LazyRouter can provide an OpenRouter-like API surface for configured providers, user keys, quotas, logs, and routing. It is not yet a full public marketplace until payments, public model catalog policy, provider terms review, abuse controls, and production observability are completed.

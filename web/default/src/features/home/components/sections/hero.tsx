@@ -48,7 +48,7 @@ export function Hero(props: HeroProps) {
   const { status } = useStatus()
   const docsUrl =
     (status?.docs_link as string | undefined) ||
-    'https://github.com/lachlanchen/LazyingRouter'
+    'https://github.com/lachlanchen/LazyRouter'
 
   const renderDocsButton = () => {
     const isExternal = docsUrl.startsWith('http')
@@ -179,7 +179,7 @@ export function Hero(props: HeroProps) {
               </span>
               <p className='text-muted-foreground/60 text-xs leading-relaxed'>
                 {t(
-                  'Supports one-click configuration and adapts to LazyingRouter multi-protocol routing.'
+                  'Supports one-click configuration and adapts to LazyRouter multi-protocol routing.'
                 )}
               </p>
             </div>

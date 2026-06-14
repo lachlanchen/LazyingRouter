@@ -14,8 +14,8 @@ import (
 
 var StartTime = time.Now().Unix() // unit: second
 var Version = "v0.0.0"            // this hard coding will be replaced automatically when building, no need to manually change
-var SystemName = "LazyingRouter"
-var Footer = "LazyingRouter is a private AI API gateway based on the open-source New API project."
+var SystemName = "LazyRouter"
+var Footer = "LazyRouter is a private AI API gateway based on the open-source New API project."
 var Logo = "/logo.png"
 var TopUpLink = ""
 

@@ -27,7 +27,7 @@ import {
 const defaultSiteSettings: SiteSettings = {
   'theme.frontend': 'default',
   Notice: '',
-  SystemName: 'LazyingRouter',
+  SystemName: 'LazyRouter',
   Logo: '/logo.png',
   Footer: '',
   About: '',

@@ -62,23 +62,23 @@ const About = () => {
   const customDescription = (
     <div style={{ textAlign: 'center' }}>
       <p>{t('可在设置页面设置关于内容，支持 HTML & Markdown')}</p>
-      {t('LazyingRouter 项目仓库地址：')}
+      {t('LazyRouter 项目仓库地址：')}
       <a
-        href='https://github.com/lachlanchen/LazyingRouter'
+        href='https://github.com/lachlanchen/LazyRouter'
         target='_blank'
         rel='noopener noreferrer'
         className='!text-semi-color-primary'
       >
-        https://github.com/lachlanchen/LazyingRouter
+        https://github.com/lachlanchen/LazyRouter
       </a>
       <p>
         <a
-          href='https://github.com/lachlanchen/LazyingRouter'
+          href='https://github.com/lachlanchen/LazyRouter'
           target='_blank'
           rel='noopener noreferrer'
           className='!text-semi-color-primary'
         >
-          LazyingRouter
+          LazyRouter
         </a>{' '}
         {t('© {{currentYear}}', { currentYear })}{' '}
         <a
